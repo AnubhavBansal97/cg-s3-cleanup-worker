@@ -1,0 +1,61 @@
+info:
+  app:
+    name: S3 Cleanup Worker
+    description: Worker to clean up stale files in S3
+    version: 0.0.1
+
+
+spring:
+  profiles:
+    active: local
+
+server:
+  port: 6969
+
+  application:
+    name: cg-s3-cleanup-worker
+
+  flyway:
+    check-location: true
+    enabled: true
+    url: ${POSTGRES_URL}
+    user: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    testWhileIdle: true
+    validationQuery: SELECT 1
+    platform: postgresql
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${POSTGRES_MAX_POOL_SIZE}
+
+    jpa:
+      show-sql: false
+      generate-ddl: false
+      hibernate:
+        ddl-auto: validate
+        use-new-id-generator-mappings: false
+
+      properties:
+        hibernate:
+          jdbc:
+            time_zone: UTC
+
+
+application:
+  app-env: ${APP_ENV}
+
+  bms-config:
+    hostname: ${BMS_AUTH_HOSTNAME}
+    port: ${BMS_AUTH_PORT}
+
+  aws-s3-credentials:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+
+  s3-config:
+    base-bucket-name: ${BASE_BUCKET_NAME}
